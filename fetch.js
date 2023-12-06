@@ -1,36 +1,22 @@
-// create api-key.js file with const API_KEY="your_api_key" in this same directory to use
 
 
-//const API_KEY = "YduGGuARwVvRUMhOF74arkPJAFNp0E7sg"; 
-//const BASE_URL = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=${My_API}`;
-//const url = `${BASE_URL}?q=tech&api-key=${API_KEY}`;
+const apiCar = '1Jw96IYswQ7qyymaEwtxPHO8lVqB0XzX'
 
-//const date = '2022-03-12'
-//const list = 'hardcover-fiction'
-//const booksurl = 'https://api.nytimes.com/svc/books/v3/lists/${date}/${list}.json?api-key=${My_API}'
+fetch('https://api.nytimes.com/svc/search/v2/articlesearch.json?q=cars&api-key=${apiCar}')
+
+    .then(response => response.json())
+    .then(data => {
+        const firstArticle = data.response.docs[0];
+
+        document.getElementById('article-title').textContent = firstArticle.headline.main;
+        document.getElementById('article-img').src = firstArticle.multimedia.length ? `https://www.nytimes.com/${firstArticle.multimedia[0].url}` : 'default_image.jpg';
+        document.getElementById('article-snippet').textContent = firstArticle.snippet;
+        document.getElementById('article-link').href = firstArticle.web_url;
+        // Display an additional item, e.g., the author
+        document.getElementById('additional-item').textContent = `Author: ${firstArticle.byline.original}`;
+    })
+    .catch(error => console.error('Error:', error));
 
 
-// create api-key.js file with const API_KEY="your_api_key" in this same directory to use
-const My_API= 'duGGuARwVvRUMhOF74arkPJAFNp0E7sg'
-const BASE_URL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
 
-const url = `${BASE_URL}?q=tech&api-key=${API_KEY}`;
 
-fetch(url)
-  .then(function(data) {
-    return data.json();
-  })
-  .then(function(responseJson) {
-    console.log(responseJson);
-
-    let article = responseJson.response.docs[0];
-    console.log(article);
-
-    const mainHeadline = article.headline.main;
-    document.getElementById('article-title').innerText = mainHeadline;
-
-    if (article.multimedia.length > 0) {
-      const imgUrl = `https://www.nytimes.com/${article.multimedia[0].url}`;
-      document.getElementById('article-img').src = imgUrl;
-    }
-  });
